@@ -1,8 +1,6 @@
 IUPUI | Computer Networking | Edwin Sanchez
 
 # Secure-Remote-Desktop
-*Short Description*
 
 ## Setup
-
-##
+Below are steps to setup the program environment on your system.
