@@ -4,3 +4,6 @@ IUPUI | Computer Networking | Edwin Sanchez
 
 ## Setup
 Below are steps to setup the program environment on your system.
+
+## Stuff
+* **PyAutoGUI:** https://pyautogui.readthedocs.io/en/latest/
