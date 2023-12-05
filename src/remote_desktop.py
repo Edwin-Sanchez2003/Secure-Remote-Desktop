@@ -2,12 +2,17 @@
     Secure Remote Desktop
     Edwin Sanchez
 
-    screen_capture.py
+    remote_desktop.py
 
     This module contains code relevant to the
-    target's screen capture. These screen captures
-    are sent to the remote desktop user (interface.py),
-    who can then see the current screen. 
+    target's the functionality of the remote desktop. 
+    
+    Screen captures, along with other data, is sent to the 
+    remote desktop user (interface.py), who can then see the 
+    current screen. 
+    
+    Also contains functionality to handle different remote
+    desktop jobs.
 """
 
 import pyautogui
@@ -47,14 +52,11 @@ def get_local_device_data()->dict:
         "height": screenHeight,
         "mouseX": currentMouseX,
         "mouseY": currentMouseY,
-        "screenCap": screenCapture
+        "screenCap": screenCapture.convert()
     } # end data
 
     return data
 # end get_local_device_data
-
-
-# end main
 
 
 if __name__ == "__main__":

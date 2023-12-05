@@ -1,1 +1,2 @@
 pyautogui==0.9.54 # for screen capture, mouse & keyboard input
+pygame==2.5.2 # for displaying purposes

@@ -15,6 +15,9 @@
 
 import socket
 
+import remote_desktop as rd # functionality for remote desktop
+import tools # useful functions that could be used anywhere
+
 import argparse # for input parameters
 
 # Parameter details #
@@ -49,7 +52,7 @@ def main():
         conn, address = wait_for_connection(server_socket=server_socket)
 
         # 2) Loop during connection, doing work
-        should_full_terminate:bool = do_things(conn=conn)
+        should_full_terminate:bool = execution(conn=conn)
 
         # 3) The session has finished - close the connection
         print("Closing Connection!")
@@ -74,33 +77,30 @@ def wait_for_connection(server_socket:socket.socket):
 # end wait_for_connection
 
 
-# does things. place holder
-def do_things(conn:socket.socket)-> bool:
+# sends & recvs data to & from interface program
+def execution(conn:socket.socket)-> bool:
+    # loop until a command to end is given
     keepGoing = True
+    recv_data = None
     while keepGoing:
-        msg = conn.recv(BYTE_COUNT).decode()
-        print(f"Message: {msg}")
+        # send data
+        send_data = rd.get_local_device_data()
+        tools.send_data(conn=conn, data=send_data)
 
-        if msg == "end":
-            print("Connection ended.")
-            keepGoing = False
-        # end if
+        # recv data
+        recv_data = tools.recv_data(conn=conn)
+
+        # whether to continue
+        keepGoing = recv_data["session"]
     # end while
 
     # write connection logs???
     # good security practice I guess...
 
-    return prompt_full_terminate()
+    # return whether we should only terminate
+    # the session or fully terminate
+    return recv_data["full"]
 # end do_things
-
-
-# handles the task of asking if the 
-# server process should be terminated
-# completely (this process killed)
-# if yes, server will not be able to connect
-# until this process is re-started manually.
-def prompt_full_terminate()-> bool:
-    return False
 
 
 # start up server socket
@@ -123,36 +123,6 @@ def init_server(port:int=5000)-> socket.socket:
     return server_socket
 # end init_server
 
-
-# send image data through UDP connection
-def send_screen_capture():
-    pass
-
-
-def server_program():
-    # get the hostname
-    host = socket.gethostname()
-    port = 5000  # initiate port number above 1024
-
-    server_socket = socket.socket()  # get instance
-    # look closely. The bind() function takes tuple as argument
-    server_socket.bind((host, port))  # bind host address and port together
-
-    # configure how many client the server can listen simultaneously
-    server_socket.listen(1)
-    conn, address = server_socket.accept()  # accept new connection
-    print("Connection from: " + str(address))
-    while True:
-        # receive data stream. it won't accept data packet greater than 1024 bytes
-        data = conn.recv(1024).decode()
-        if not data:
-            # if data is not received break
-            break
-        print("from connected user: " + str(data))
-        data = input(' -> ')
-        conn.send(data.encode())  # send data to the client
-
-    conn.close()  # close the connection
 
 if __name__ == "__main__":
     main()
