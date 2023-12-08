@@ -18,6 +18,8 @@
 import pyautogui
 from PIL.Image import Image
 
+import tools
+
 def main():
     # test data capture functionality
     for _ in range(5):
@@ -26,6 +28,7 @@ def main():
             if key == "screenCap":
                 val:Image
                 val.save("./test/screen_shot.png")
+                
             else: 
                 print(f"{key}: {val}")
             # end if
@@ -52,7 +55,7 @@ def get_local_device_data()->dict:
         "height": screenHeight,
         "mouseX": currentMouseX,
         "mouseY": currentMouseY,
-        "screenCap": screenCapture.convert()
+        "screenCap": tools.image_to_byte_array(screenCapture)
     } # end data
 
     return data

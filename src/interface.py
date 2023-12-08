@@ -83,10 +83,9 @@ def execution(conn:socket.socket, screen:pygame.Surface)-> None:
 
         # recv data
         recv_data = tools.recv_data(conn=conn)
-
         # display
         display(
-            image=tools.byte_array_to_image(bytes=recv_data["screenCap"]),
+            image=tools.byte_array_to_image(byte_data=recv_data["screenCap"]),
             screen=screen
         ) # end display
         
