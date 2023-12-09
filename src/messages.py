@@ -97,7 +97,11 @@ def send_msg_image(conn:socket.socket, image:Image.Image)->None:
 
 # recieve image data over connection
 def recv_msg_image(conn:socket.socket)-> Image.Image:
-    msg_length = conn.recv(params.HEADER).decode(params.FORMAT)
+    msg_length = None
+    try:
+        msg_length = conn.recv(params.HEADER).decode(params.FORMAT)
+    except UnicodeDecodeError:
+        return None
     if msg_length: # make sure that the message is an actual message
         # recieve message
         msg_length = int(msg_length)

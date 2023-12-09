@@ -22,7 +22,7 @@ def main():
     # begin use-loop
     keep_connection = True
     counter = 0
-    test_counts = 5
+    test_counts = 30
     while keep_connection:
         counter += 1
         print(f"Counter: {counter} of {test_counts}")
@@ -40,7 +40,10 @@ def main():
 
         # recieve image data & update UI
         image = msgs.recv_msg_image(conn=client)
+        while image is None:
+            image = msgs.recv_msg_image(conn=client)
         image.save(f"../test/screenshot_{counter}.png")
+
 # end main
 
 
