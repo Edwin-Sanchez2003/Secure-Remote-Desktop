@@ -1,4 +1,5 @@
 
+import time
 import socket
 
 import params
@@ -19,11 +20,27 @@ def main():
     # establish session key
 
     # begin use-loop
-    data = msgs.get_msg_format()
-    data["payload"] = "Hello!"
-    data["disconnect"] = True
-    data["shutdown"] = True
-    msgs.seng_msg_dict(conn=client, data=data)
+    keep_connection = True
+    counter = 0
+    test_counts = 5
+    while keep_connection:
+        counter += 1
+        print(f"Counter: {counter} of {test_counts}")
+        # send instructions
+        data = msgs.get_msg_format()
+        data["payload"] = "Hello!"
+        if counter <= test_counts:
+            data["disconnect"] = False
+            data["shutdown"] = False
+        else:
+            data["disconnect"] = True
+            data["shutdown"] = True
+            keep_connection = False
+        msgs.send_msg_dict(conn=client, data=data)
+
+        # recieve image data & update UI
+        image = msgs.recv_msg_image(conn=client)
+        image.save(f"../test/screenshot_{counter}.png")
 # end main
 
 

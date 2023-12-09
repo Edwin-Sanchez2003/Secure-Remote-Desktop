@@ -1,8 +1,11 @@
 
-import json
+import time
 import socket
 
+import pyautogui
+
 import params
+import messages as msgs
 
 SERVER = socket.gethostbyname(socket.gethostname())
 print(socket.gethostname())
@@ -35,15 +38,14 @@ def handle_interface(conn:socket.socket, addr)->bool:
     keep_server_running = True
     connected = True
     while connected:
-        msg_length = conn.recv(params.HEADER).decode(params.FORMAT)
-        if msg_length: # make sure that the message is an actual message
-            msg_length = int(msg_length)
-            msg = conn.recv(msg_length).decode(params.FORMAT)
-            data = json.loads(msg)
-            print(data["disconnect"])
-            print(data["shutdown"])
+        data = msgs.recv_msg_dict(conn=conn)
+        if data: # if data exists...
             print(f"[{addr}]: {data}")
             print(f"[{addr}]: {data['payload']}")
+
+            # send screen capture data
+            screen_capture = pyautogui.screenshot()
+            msgs.send_msg_image(conn=conn, image=screen_capture)
 
             # check if we should disconnect
             if data["disconnect"] == True:
