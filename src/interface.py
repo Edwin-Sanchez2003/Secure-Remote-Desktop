@@ -1,6 +1,8 @@
 
 import socket
 
+from cryptography.fernet import Fernet
+
 import params
 import messages as msgs
 import security
@@ -15,6 +17,7 @@ def main():
     client.connect(ADDR)
     
     # establish session key
+    sess_key:Fernet = security.session.gen_session_client(conn=client)
 
     # authenticate
     security.authenticate.client_auth(conn=client)
@@ -36,7 +39,7 @@ def main():
             data["disconnect"] = True
             data["shutdown"] = True
             keep_connection = False
-        msgs.send_msg_dict(conn=client, data=data)
+        msgs.send_msg_dict_encrypted(conn=client, sess_key=sess_key, data=data)
 
         # recieve image data & update UI
         image = msgs.recv_msg_image(conn=client)

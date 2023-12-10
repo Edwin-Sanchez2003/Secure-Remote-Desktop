@@ -2,6 +2,7 @@
 import time
 import socket
 
+from cryptography.fernet import Fernet
 import pyautogui
 
 import params
@@ -27,11 +28,12 @@ def main():
         conn, addr = server.accept()
 
         # create session key
-
+        sess_key:Fernet = security.session.gen_session_server(conn=conn)
+        
         # authenticate
-        security.authenticate.server_auth(conn=conn)
+        security.authenticate.server_auth(conn=conn, path="./data.json")
 
-        keep_running = handle_interface(conn=conn, addr=addr)
+        keep_running = handle_interface(conn=conn, addr=addr, sess_key=sess_key)
     # end while
 
     print("Server Shutting Down!")
@@ -40,12 +42,12 @@ def main():
 
 # handles a connection to the client
 # if returns false, shut down server
-def handle_interface(conn:socket.socket, addr)->bool:
+def handle_interface(conn:socket.socket, addr, sess_key:Fernet)->bool:
     print(f"[NEW CONNECTION]: {addr} connected.")
     keep_server_running = True
     connected = True
     while connected:
-        data = msgs.recv_msg_dict(conn=conn)
+        data = msgs.recv_msg_dict_encrypted(conn=conn, sess_key=sess_key)
         if data: # if data exists...
             print(f"[{addr}]: {data}")
             print(f"[{addr}]: {data['payload']}")

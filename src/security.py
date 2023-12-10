@@ -1,6 +1,4 @@
 
-
-import password
 import authenticate
-import encrypt
+import session
 import face_authentication

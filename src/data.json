@@ -1,0 +1,9 @@
+{
+    "password": "123456789",
+    "client": {
+        "public": 0
+    },
+    "server": {
+        "public": 0
+    }
+}
