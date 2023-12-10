@@ -79,6 +79,8 @@ def handle_interface(conn:socket.socket, addr, sess_key:Fernet)->bool:
                 ) # end authentication decision
                 if auth_decision == False:
                     connected = False
+                # reset the start time so we wait another X seconds
+                start_time = time.time()
                 # end if
             # end if
 
