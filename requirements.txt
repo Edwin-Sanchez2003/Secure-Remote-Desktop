@@ -2,3 +2,4 @@ pyautogui==0.9.54 # for screen capture, mouse & keyboard input
 pygame==2.5.2 # for displaying purposes
 tqdm==4.66.1 # for debugging...
 numpy==1.26.2
+bcrypt==4.1.1 # for encryption & hashing

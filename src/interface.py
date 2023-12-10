@@ -1,13 +1,12 @@
 
-import time
 import socket
 
 import params
 import messages as msgs
+import security
 
 SERVER = "192.168.56.1"
 ADDR = (SERVER, params.PORT)
-
 
 
 def main():
@@ -15,9 +14,10 @@ def main():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect(ADDR)
     
-    # authenticate
-
     # establish session key
+
+    # authenticate
+    security.authenticate.client_auth(conn=client)
 
     # begin use-loop
     keep_connection = True

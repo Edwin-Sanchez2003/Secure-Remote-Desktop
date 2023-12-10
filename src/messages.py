@@ -14,7 +14,8 @@ import params
 # MSG FORMAT #
 MSG_FORMAT = {
     "payload": None,
-    "screen_capture": None,
+    "salt": None,
+    "hash": None,
     "disconnect": False,
     "shutdown": False
 } # end MSG_FORMAT dict

@@ -6,6 +6,7 @@ import pyautogui
 
 import params
 import messages as msgs
+import security
 
 SERVER = socket.gethostbyname(socket.gethostname())
 print(socket.gethostname())
@@ -24,6 +25,12 @@ def main():
     while keep_running:
         print("Running...")
         conn, addr = server.accept()
+
+        # create session key
+
+        # authenticate
+        security.authenticate.server_auth(conn=conn)
+
         keep_running = handle_interface(conn=conn, addr=addr)
     # end while
 
