@@ -68,6 +68,7 @@ def handle_interface(conn:socket.socket, addr, sess_key:Fernet)->bool:
                 # send request to authenticate using biocapsule
                 req_bc = msgs.get_msg_format()
                 req_bc["payload"] = params.BIOCAPSULE
+                print("Req BC...")
                 msgs.send_msg_dict_encrypted(conn=conn, sess_key=sess_key, data=req_bc)
                 bc_resp = msgs.recv_msg_dict_encrypted(conn=conn, sess_key=sess_key)
                 while bc_resp["payload"] != params.BIOCAPSULE:
