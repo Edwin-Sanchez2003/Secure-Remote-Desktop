@@ -20,6 +20,7 @@ MSG_FORMAT = {
     "public": None,
     "session": None,
     "signature": None,
+    "biocapsule": None,
     "disconnect": False,
     "shutdown": False
 } # end MSG_FORMAT dict
@@ -161,8 +162,11 @@ def recv_msg_image(conn:socket.socket)-> Image.Image:
     if msg_length: # make sure that the message is an actual message
         # recieve message
         msg_length = int(msg_length)
-        image_bytes = conn.recv(msg_length)
-        image = Image.open(io.BytesIO(image_bytes))
+        data_bytes = conn.recv(msg_length)
+        try:
+            image = Image.open(io.BytesIO(data_bytes))
+        except:
+            return data_bytes
         return image
     # end if
     return None
